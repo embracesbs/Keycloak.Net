@@ -71,10 +71,16 @@ namespace Keycloak.Net
         }
 
 
-        private IFlurlRequest GetBaseUrl(string authenticationRealm) => new Url(_urlService.Get())
-            .AppendPathSegment("/auth")
-            .ConfigureRequest(settings => settings.JsonSerializer = s_serializer)
-            .WithAuthentication(_tokenService.Get, _urlService.Get(),authenticationRealm, _userService.GetUserName(), _userService.GetPassword())
-            .WithForwardedHttpHeaders(_forwardedHttpHeadersService.Get());
+        private IFlurlRequest GetBaseUrl(string authenticationRealm)
+        {
+            Func<string> getToken = _tokenService != null ? _tokenService.Get : (Func<string>)null;
+            (string userName, string password) = getToken != null & _userService != null ? (_userService.GetUserName(), _userService.GetPassword()) : ((string)null, (string)null);
+
+            return new Url(_urlService.Get())
+                .AppendPathSegment("/auth")
+                .ConfigureRequest(settings => settings.JsonSerializer = s_serializer)
+                .WithAuthentication(getToken, _urlService.Get(), authenticationRealm, userName, password)
+                .WithForwardedHttpHeaders(_forwardedHttpHeadersService.Get());
+        }
     }
 }
