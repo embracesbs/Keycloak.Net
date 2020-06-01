@@ -59,5 +59,7 @@ namespace Keycloak.Net.Models.Clients
         public IEnumerable<string> OptionalClientScopes { get; set; }
         [JsonProperty("access")]
         public ClientAccess Access { get; set; }
+        [JsonProperty("secret")]
+        public string Secret { get; set; }
     }
 }
