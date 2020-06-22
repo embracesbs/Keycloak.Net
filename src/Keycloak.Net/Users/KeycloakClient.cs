@@ -210,6 +210,14 @@ namespace Keycloak.Net
                 .ConfigureAwait(false);
             return response.IsSuccessStatusCode;
         }
+        public async Task<bool> SetUserPasswordAsync(string realm, string userId, string password)
+        {
+            var response = await GetBaseUrl(realm)
+                .AppendPathSegment($"/admin/realms/{realm}/users/{userId}/reset-password")
+                .PutJsonAsync(new { type = "password", value = password, temporary = false })
+                .ConfigureAwait(false);
+            return response.IsSuccessStatusCode;
+        }
 
         public async Task<bool> VerifyUserEmailAddressAsync(string realm, string userId, string clientId = null, string redirectUri = null)
         {
