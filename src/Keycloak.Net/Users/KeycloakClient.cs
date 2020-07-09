@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Flurl.Http;
 using Keycloak.Net.Common.Extensions;
 using Keycloak.Net.Models.Groups;
 using Keycloak.Net.Models.Users;
+using Newtonsoft.Json;
 
 namespace Keycloak.Net
 {
@@ -210,13 +212,20 @@ namespace Keycloak.Net
                 .ConfigureAwait(false);
             return response.IsSuccessStatusCode;
         }
-        public async Task<bool> SetUserPasswordAsync(string realm, string userId, string password)
+
+        public async Task<SetPasswordResponse> SetUserPasswordAsync(string realm, string userId, string password)
         {
             var response = await GetBaseUrl(realm)
                 .AppendPathSegment($"/admin/realms/{realm}/users/{userId}/reset-password")
+                .AllowHttpStatus(HttpStatusCode.BadRequest)
                 .PutJsonAsync(new { type = "password", value = password, temporary = false })
                 .ConfigureAwait(false);
-            return response.IsSuccessStatusCode;
+            
+            if (response.IsSuccessStatusCode)
+                return new SetPasswordResponse {Success = response.IsSuccessStatusCode};
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<SetPasswordResponse>(jsonString);
         }
 
         public async Task<bool> VerifyUserEmailAddressAsync(string realm, string userId, string clientId = null, string redirectUri = null)
