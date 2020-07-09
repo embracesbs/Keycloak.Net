@@ -70,7 +70,6 @@ namespace Keycloak.Net
         {
         }
 
-
         private IFlurlRequest GetBaseUrl(string authenticationRealm)
         {
             Func<string> getToken = _tokenService != null ? _tokenService.Get : (Func<string>)null;
