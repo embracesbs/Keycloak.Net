@@ -1,5 +1,4 @@
-﻿using Keycloak.Net.Models.Roles;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace Keycloak.Net.Models.Groups
@@ -19,6 +18,6 @@ namespace Keycloak.Net.Models.Groups
         [JsonProperty("clientRoles")]
         public IDictionary<string, IEnumerable<string>> ClientRoles { get; set; }
         [JsonProperty("attributes")]
-        public IDictionary<string, string> Attributes { get; set; }
+        public IDictionary<string, IEnumerable<string>> Attributes { get; set; }
     }
 }
