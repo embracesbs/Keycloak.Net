@@ -111,10 +111,10 @@ namespace Keycloak.Net
             };
 
             return await GetBaseUrl(realm)
-            .AppendPathSegment($"/admin/realms/{realm}/groups/{groupId}/members")
-            .SetQueryParams(queryParams)
-            .GetJsonAsync<IEnumerable<User>>()
-            .ConfigureAwait(false);
+                .AppendPathSegment($"/admin/realms/{realm}/groups/{groupId}/members")
+                .SetQueryParams(queryParams)
+                .GetJsonAsync<IEnumerable<User>>()
+                .ConfigureAwait(false);
         }
     }
 }
