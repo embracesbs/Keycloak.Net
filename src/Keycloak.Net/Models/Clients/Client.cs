@@ -62,6 +62,6 @@ namespace Keycloak.Net.Models.Clients
         [JsonProperty("secret")]
         public string Secret { get; set; }
         [JsonProperty("authorizationServicesEnabled")]
-        public bool AuthorizationServicesEnabled { get; set; }
+        public bool? AuthorizationServicesEnabled { get; set; }
     }
 }
