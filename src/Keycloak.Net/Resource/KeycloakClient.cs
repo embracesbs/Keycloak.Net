@@ -16,13 +16,19 @@ namespace Keycloak.Net
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<IEnumerable<Resource>> GetResourcesAsync(string realm, string resourceServerId = null, bool deep = false, int? first = null, int? max = null)
+        public async Task<IEnumerable<Resource>> GetResourcesAsync(string realm, string resourceServerId = null, 
+            bool deep = false, int? first = null, int? max = null, string name = null, string owner = null,
+            string type = null, string uri = null)
         {
             var queryParams = new Dictionary<string, object>
             {
                 [nameof(deep)] = deep,
                 [nameof(first)] = first,
-                [nameof(max)] = max
+                [nameof(max)] = max,
+                [nameof(name)] = name,
+                [nameof(owner)] = owner,
+                [nameof(type)] = type,
+                [nameof(uri)] = uri
             };
             
             return await GetBaseUrl(realm)
