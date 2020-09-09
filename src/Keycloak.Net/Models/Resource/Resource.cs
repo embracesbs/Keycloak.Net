@@ -5,12 +5,12 @@ namespace Keycloak.Net.Models.Resource
 {
     public class Resource
     {
-        [JsonProperty("id")]
+        [JsonProperty("_id")]
         public string Id { get; set; }
         [JsonProperty("scopes")]
         public IEnumerable<Scope> Scopes { get; set; }
         [JsonProperty("attributes")]
-        public Dictionary<string, string> Attributes { get; set; }
+        public Dictionary<string, IEnumerable<string>> Attributes { get; set; }
         [JsonProperty("uris")]
         public IEnumerable<string> Uris { get; set; }
         [JsonProperty("name")]
