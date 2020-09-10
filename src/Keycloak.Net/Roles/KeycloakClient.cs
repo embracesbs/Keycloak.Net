@@ -25,8 +25,8 @@ namespace Keycloak.Net
         {
             var queryParams = new Dictionary<string, object>
             {
-                [nameof(first)] = first ?? 0,
-                [nameof(max)] = max ?? 20,
+                [nameof(first)] = first,
+                [nameof(max)] = max,
                 [nameof(search)] = search
             };
 
@@ -149,8 +149,8 @@ namespace Keycloak.Net
         {
             var queryParams = new Dictionary<string, object>
             {
-                [nameof(first)] = first ?? 0,
-                [nameof(max)] = max ?? 20,
+                [nameof(first)] = first,
+                [nameof(max)] = max,
                 [nameof(search)] = search
             };
 
