@@ -46,6 +46,7 @@ namespace Keycloak.Net
             var response = await GetBaseUrl(realm)
                 .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/permission")
                 .AppendPathSegment(permission.Type == AuthorizationPermissionType.Scope ? "/scope" : "/resource")
+                .AppendPathSegment($"/{permission.Id}")
                 .PutJsonAsync(permission)
                 .ConfigureAwait(false);
             return response.IsSuccessStatusCode;

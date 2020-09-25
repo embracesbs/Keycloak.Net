@@ -1,4 +1,5 @@
-﻿using Keycloak.Net.Common.Converters;
+﻿using System.Collections.Generic;
+using Keycloak.Net.Common.Converters;
 using Newtonsoft.Json;
 
 namespace Keycloak.Net.Models.Clients
@@ -18,7 +19,11 @@ namespace Keycloak.Net.Models.Clients
         [JsonConverter(typeof(DecisionStrategiesConverter))]
         public DecisionStrategy DecisionStrategy { get; set; }
         [JsonProperty("resourceType")]
-        public string ResourceType { get; set; } //only in type=resource
+        public string ResourceType { get; set; }
+        [JsonProperty("resources")]
+        public IEnumerable<string> ResourceIds { get; set; }
+        [JsonProperty("policies")]
+        public IEnumerable<string> PolicyIds { get; set; }
     }
 
     public enum PolicyDecisionLogic
