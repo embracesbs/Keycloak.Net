@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Flurl.Http;
 using Keycloak.Net.Models.Clients;
+using Keycloak.Net.Models.Resource;
 
 namespace Keycloak.Net
 {
@@ -27,8 +28,7 @@ namespace Keycloak.Net
             .GetJsonAsync<AuthorizationPermission>()
             .ConfigureAwait(false);
 
-        public async Task<IEnumerable<AuthorizationPermission>> GetAuthorizationPermissionsAsync(string realm, string clientId, int? first = null,
-            int? max = null)
+        public async Task<IEnumerable<AuthorizationPermission>> GetAuthorizationPermissionsAsync(string realm, string clientId, AuthorizationPermissionType? ofPermissionType = null, int? first = null, int? max = null)
         {
             var queryParams = new Dictionary<string, object>
             {
@@ -36,8 +36,13 @@ namespace Keycloak.Net
                 [nameof(max)] = max
             };
 
-            return await GetBaseUrl(realm)
-                .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/permission")
+            var request = GetBaseUrl(realm)
+                .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/permission");
+
+            if (ofPermissionType.HasValue)
+                request.AppendPathSegment(ofPermissionType.Value == AuthorizationPermissionType.Scope ? "/scope" : "/resource");
+            
+            return await request
                 .SetQueryParams(queryParams)
                 .GetJsonAsync<IEnumerable<AuthorizationPermission>>()
                 .ConfigureAwait(false);
@@ -64,6 +69,34 @@ namespace Keycloak.Net
                 .DeleteAsync()
                 .ConfigureAwait(false);
             return response.IsSuccessStatusCode;
+        }
+        
+        //related data
+        public async Task<IEnumerable<Policy>> GetAuthorizationPermissionAssociatedPoliciesAsync(string realm, string clientId, string permissionId)
+        {
+            return await GetBaseUrl(realm)
+                .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/permission")
+                .AppendPathSegment($"/policy/{permissionId}/associatedPolicies" )
+                .GetJsonAsync<IEnumerable<Policy>>()
+                .ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<Scope>> GetAuthorizationPermissionAssociatedScopesAsync(string realm, string clientId, string permissionId)
+        {
+            return await GetBaseUrl(realm)
+                .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/permission")
+                .AppendPathSegment($"/policy/{permissionId}/scopes" )
+                .GetJsonAsync<IEnumerable<Scope>>()
+                .ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<Resource>> GetAuthorizationPermissionAssociatedResourcesAsync(string realm, string clientId, string permissionId)
+        {
+            return await GetBaseUrl(realm)
+                .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/permission")
+                .AppendPathSegment($"/policy/{permissionId}/resources" )
+                .GetJsonAsync<IEnumerable<Resource>>()
+                .ConfigureAwait(false);
         }
         #endregion 
 
