@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace Keycloak.Net.Models.Resource
+namespace Keycloak.Net.Models.AuthorizationScopes
 {
-    public class Scope
+    public class AuthorizationScope
     {
         [JsonProperty("id")]
         public string Id { get; set; }
