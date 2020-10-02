@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Flurl.Http;
+using Keycloak.Net.Models.AuthorizationScopes;
 using Keycloak.Net.Models.Clients;
-using Keycloak.Net.Models.Resource;
+using Keycloak.Net.Models.Resources;
 
 namespace Keycloak.Net
 {
@@ -81,12 +82,12 @@ namespace Keycloak.Net
                 .ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<Scope>> GetAuthorizationPermissionAssociatedScopesAsync(string realm, string clientId, string permissionId)
+        public async Task<IEnumerable<AuthorizationScope>> GetAuthorizationPermissionAssociatedScopesAsync(string realm, string clientId, string permissionId)
         {
             return await GetBaseUrl(realm)
                 .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/permission")
                 .AppendPathSegment($"/policy/{permissionId}/scopes" )
-                .GetJsonAsync<IEnumerable<Scope>>()
+                .GetJsonAsync<IEnumerable<AuthorizationScope>>()
                 .ConfigureAwait(false);
         }
 

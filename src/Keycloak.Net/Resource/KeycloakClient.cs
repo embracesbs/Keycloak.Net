@@ -1,5 +1,5 @@
 ﻿using Flurl.Http;
-using Keycloak.Net.Models.Resource;
+using Keycloak.Net.Models.Resources;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
