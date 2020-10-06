@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Flurl.Http;
+using Keycloak.Net.Models.AuthorizationPermissions;
 using Keycloak.Net.Models.AuthorizationScopes;
 using Keycloak.Net.Models.Clients;
 using Keycloak.Net.Models.Resources;
@@ -11,14 +12,17 @@ namespace Keycloak.Net
     public partial class KeycloakClient
     {
         #region Permissions
-        public async Task<bool> CreateAuthorizationPermissionAsync(string realm, string clientId, AuthorizationPermission permission)
+        public async Task<string> CreateAuthorizationPermissionAsync(string realm, string clientId, AuthorizationPermission permission)
         {
             var response = await GetBaseUrl(realm)
                 .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/permission")
                 .AppendPathSegment(permission.Type == AuthorizationPermissionType.Scope ? "/scope" : "/resource")
                 .PostJsonAsync(permission)
                 .ConfigureAwait(false);
-            return response.IsSuccessStatusCode;
+
+            var locationPathAndQuery = response.Headers.Location.PathAndQuery;
+            var permissionId = response.IsSuccessStatusCode ? locationPathAndQuery.Substring(locationPathAndQuery.LastIndexOf("/", StringComparison.Ordinal) + 1) : null;
+            return permissionId;
         }
 
         public async Task<AuthorizationPermission> GetAuthorizationPermissionByIdAsync(string realm, string clientId,
@@ -29,12 +33,16 @@ namespace Keycloak.Net
             .GetJsonAsync<AuthorizationPermission>()
             .ConfigureAwait(false);
 
-        public async Task<IEnumerable<AuthorizationPermission>> GetAuthorizationPermissionsAsync(string realm, string clientId, AuthorizationPermissionType? ofPermissionType = null, int? first = null, int? max = null)
+        public async Task<IEnumerable<AuthorizationPermission>> GetAuthorizationPermissionsAsync(string realm, string clientId, AuthorizationPermissionType? ofPermissionType = null, 
+            int? first = null, int? max = null, string name = null, string resource = null, string scope = null)
         {
             var queryParams = new Dictionary<string, object>
             {
                 [nameof(first)] = first,
-                [nameof(max)] = max
+                [nameof(max)] = max,
+                [nameof(name)] = name,
+                [nameof(resource)] = resource,
+                [nameof(scope)] = scope
             };
 
             var request = GetBaseUrl(realm)

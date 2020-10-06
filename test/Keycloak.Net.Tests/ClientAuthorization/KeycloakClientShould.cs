@@ -1,13 +1,11 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Keycloak.Net.Models.Clients;
+﻿using System.Threading.Tasks;
+using Keycloak.Net.Models.AuthorizationPermissions;
 using Xunit;
 
 namespace Keycloak.Net.Tests
 {
     public partial class KeycloakClientShould
     {
-
         [Theory(Skip = "Not working yet")]
         [InlineData("Insurance", "insurance-product", AuthorizationPermissionType.Resource, "permission-id")]
         public async Task GetAuthorizationPermissionByIdAsync(string realm, string clientId, AuthorizationPermissionType type, string permissionId)

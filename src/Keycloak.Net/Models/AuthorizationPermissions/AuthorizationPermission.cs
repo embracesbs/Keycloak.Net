@@ -2,7 +2,7 @@
 using Keycloak.Net.Common.Converters;
 using Newtonsoft.Json;
 
-namespace Keycloak.Net.Models.Clients
+namespace Keycloak.Net.Models.AuthorizationPermissions
 {
     public class AuthorizationPermission
     {
@@ -29,6 +29,9 @@ namespace Keycloak.Net.Models.Clients
 
         [JsonProperty("resources")]
         public IEnumerable<string> ResourceIds { get; set; }
+
+        [JsonProperty("scopes")]
+        public IEnumerable<string> ScopeIds { get; set; }
 
         [JsonProperty("policies")]
         public IEnumerable<string> PolicyIds { get; set; }
