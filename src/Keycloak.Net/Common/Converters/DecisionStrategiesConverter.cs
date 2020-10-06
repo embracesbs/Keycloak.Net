@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Keycloak.Net.Models.Clients;
+using Keycloak.Net.Models.AuthorizationPermissions;
 
 namespace Keycloak.Net.Common.Converters
 {

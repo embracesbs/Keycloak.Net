@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Keycloak.Net.Common.Converters;
+using Keycloak.Net.Models.AuthorizationPermissions;
 using Newtonsoft.Json;
 
 namespace Keycloak.Net.Models.Clients
