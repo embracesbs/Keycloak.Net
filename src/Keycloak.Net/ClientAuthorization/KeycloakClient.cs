@@ -84,8 +84,7 @@ namespace Keycloak.Net
         public async Task<IEnumerable<Policy>> GetAuthorizationPermissionAssociatedPoliciesAsync(string realm, string clientId, string permissionId)
         {
             return await GetBaseUrl(realm)
-                .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/permission")
-                .AppendPathSegment($"/policy/{permissionId}/associatedPolicies" )
+                .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/policy/{permissionId}/associatedPolicies")
                 .GetJsonAsync<IEnumerable<Policy>>()
                 .ConfigureAwait(false);
         }
@@ -93,8 +92,7 @@ namespace Keycloak.Net
         public async Task<IEnumerable<AuthorizationScope>> GetAuthorizationPermissionAssociatedScopesAsync(string realm, string clientId, string permissionId)
         {
             return await GetBaseUrl(realm)
-                .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/permission")
-                .AppendPathSegment($"/policy/{permissionId}/scopes" )
+                .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/policy/{permissionId}/scopes")
                 .GetJsonAsync<IEnumerable<AuthorizationScope>>()
                 .ConfigureAwait(false);
         }
@@ -102,8 +100,7 @@ namespace Keycloak.Net
         public async Task<IEnumerable<Resource>> GetAuthorizationPermissionAssociatedResourcesAsync(string realm, string clientId, string permissionId)
         {
             return await GetBaseUrl(realm)
-                .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/permission")
-                .AppendPathSegment($"/policy/{permissionId}/resources" )
+                .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/policy/{permissionId}/resources")
                 .GetJsonAsync<IEnumerable<Resource>>()
                 .ConfigureAwait(false);
         }
