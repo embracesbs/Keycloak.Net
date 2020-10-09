@@ -10,7 +10,11 @@ namespace Keycloak.Net.Common.Converters
         private static readonly Dictionary<PolicyType, string> SPairs = new Dictionary<PolicyType, string>
         {
             [PolicyType.Role] = "role",
-            [PolicyType.Scope] = "scope"
+            [PolicyType.Client] = "client",
+            [PolicyType.Time] = "time",
+            [PolicyType.User] = "user",
+            [PolicyType.Aggregate] = "aggregate",
+            [PolicyType.Group] = "group"
         };
 
         protected override string EntityString { get; } = "type";

@@ -25,8 +25,8 @@ namespace Keycloak.Net.Models.Clients
         [JsonConverter(typeof(DecisionStrategiesConverter))]
         public DecisionStrategy DecisionStrategy { get; set; }
 
-        [JsonProperty("roles")]
-        public IEnumerable<RoleIdentifier> RoleIds { get; set; }
+        [JsonProperty("config")]
+        public PolicyConfig Config { get; set; }
     }
 
     public class RolePolicy
@@ -50,10 +50,10 @@ namespace Keycloak.Net.Models.Clients
         public DecisionStrategy DecisionStrategy { get; set; }
 
         [JsonProperty("roles")]
-        public IEnumerable<RoleIdentifier> RoleIds { get; set; }
+        public IEnumerable<RoleConfig> RoleConfigs { get; set; }
     }
 
-    public class RoleIdentifier
+    public class RoleConfig
     {
         [JsonProperty("id")]
         public string Id { get; set; }
@@ -65,6 +65,16 @@ namespace Keycloak.Net.Models.Clients
     public enum PolicyType
     {
         Role,
-        Scope
+        Client,
+        Time,
+        User,
+        Aggregate,
+        Group
+    }
+
+    public class PolicyConfig
+    {
+        [JsonProperty("roles")]
+        public IEnumerable<RoleConfig> RoleConfigs { get; set; }
     }
 }
