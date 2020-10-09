@@ -80,7 +80,6 @@ namespace Keycloak.Net
             return response.IsSuccessStatusCode;
         }
         
-        //related data
         public async Task<IEnumerable<Policy>> GetAuthorizationPermissionAssociatedPoliciesAsync(string realm, string clientId, string permissionId)
         {
             return await GetBaseUrl(realm)
@@ -124,11 +123,32 @@ namespace Keycloak.Net
             .GetJsonAsync<RolePolicy>()
             .ConfigureAwait(false);
 
+        public async Task<IEnumerable<Policy>> GetAuthorizationPoliciesAsync(string realm, string clientId, 
+            int? first = null, int? max = null, 
+            string name = null, string resource = null,
+            string scope = null, bool? permission = null)
+        {
+            var queryParams = new Dictionary<string, object>
+            {
+                [nameof(first)] = first,
+                [nameof(max)] = max,
+                [nameof(name)] = name,
+                [nameof(resource)] = resource,
+                [nameof(scope)] = scope,
+                [nameof(permission)] = permission
+            };
+
+            return await GetBaseUrl(realm)
+                .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/policy")
+                .SetQueryParams(queryParams)
+                .GetJsonAsync<IEnumerable<Policy>>()
+                .ConfigureAwait(false);
+        }
+
         public async Task<IEnumerable<RolePolicy>> GetRolePoliciesAsync(string realm, string clientId, 
             int? first = null, int? max = null, 
             string name = null, string resource = null,
-            string scope = null, bool? permission = null
-        )
+            string scope = null, bool? permission = null)
         {
             var queryParams = new Dictionary<string, object>
             {
