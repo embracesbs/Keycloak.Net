@@ -14,7 +14,9 @@ namespace Keycloak.Net.Common.Converters
             [PolicyType.Time] = "time",
             [PolicyType.User] = "user",
             [PolicyType.Aggregate] = "aggregate",
-            [PolicyType.Group] = "group"
+            [PolicyType.Group] = "group",
+            [PolicyType.Js] = "js"
+
         };
 
         protected override string EntityString { get; } = "type";

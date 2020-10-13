@@ -69,7 +69,8 @@ namespace Keycloak.Net.Models.Clients
         Time,
         User,
         Aggregate,
-        Group
+        Group,
+        Js
     }
 
     public class PolicyConfig
