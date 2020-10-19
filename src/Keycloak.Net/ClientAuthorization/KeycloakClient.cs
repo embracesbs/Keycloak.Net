@@ -6,6 +6,7 @@ using Keycloak.Net.Models.AuthorizationPermissions;
 using Keycloak.Net.Models.AuthorizationScopes;
 using Keycloak.Net.Models.Clients;
 using Keycloak.Net.Models.Resources;
+using Resource = Keycloak.Net.Models.Resources.Resource;
 
 namespace Keycloak.Net
 {
