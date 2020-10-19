@@ -1,5 +1,5 @@
 ﻿using Flurl.Http;
-using Keycloak.Net.Models.Resources;
+using Keycloak.Net.Models.AuthorizationResources;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,7 +7,7 @@ namespace Keycloak.Net
 {
     public partial class KeycloakClient
     {
-        public async Task<bool> CreateResourceAsync(string realm, string resourceServerId, Resource resource)
+        public async Task<bool> CreateResourceAsync(string realm, string resourceServerId, AuthorizationResource resource)
         {
             var response = await GetBaseUrl(realm)
                 .AppendPathSegment($"/admin/realms/{realm}/clients/{resourceServerId}/authz/resource-server/resource")
@@ -16,7 +16,7 @@ namespace Keycloak.Net
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<IEnumerable<Resource>> GetResourcesAsync(string realm, string resourceServerId = null, 
+        public async Task<IEnumerable<AuthorizationResource>> GetResourcesAsync(string realm, string resourceServerId = null, 
             bool deep = false, int? first = null, int? max = null, string name = null, string owner = null,
             string type = null, string uri = null)
         {
@@ -34,16 +34,16 @@ namespace Keycloak.Net
             return await GetBaseUrl(realm)
                 .AppendPathSegment($"/admin/realms/{realm}/clients/{resourceServerId}/authz/resource-server/resource")
                 .SetQueryParams(queryParams)
-                .GetJsonAsync<IEnumerable<Resource>>()
+                .GetJsonAsync<IEnumerable<AuthorizationResource>>()
                 .ConfigureAwait(false);
         }
 
-        public async Task<Resource> GetResourceAsync(string realm, string resourceServerId, string resourceId) => await GetBaseUrl(realm)
+        public async Task<AuthorizationResource> GetResourceAsync(string realm, string resourceServerId, string resourceId) => await GetBaseUrl(realm)
             .AppendPathSegment($"/admin/realms/{realm}/clients/{resourceServerId}/authz/resource-server/resource/{resourceId}")
-            .GetJsonAsync<Resource>()
+            .GetJsonAsync<AuthorizationResource>()
             .ConfigureAwait(false);
 
-        public async Task<bool> UpdateResourceAsync(string realm, string resourceServerId, string resourceId, Resource resource)
+        public async Task<bool> UpdateResourceAsync(string realm, string resourceServerId, string resourceId, AuthorizationResource resource)
         {
             var response = await GetBaseUrl(realm)
                 .AppendPathSegment($"/admin/realms/{realm}/clients/{resourceServerId}/authz/resource-server/resource/{resourceId}")

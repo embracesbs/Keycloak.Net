@@ -2,9 +2,9 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace Keycloak.Net.Models.Resources
+namespace Keycloak.Net.Models.AuthorizationResources
 {
-    public class Resource
+    public class AuthorizationResource
     {
         [JsonProperty("_id")]
         public string Id { get; set; }

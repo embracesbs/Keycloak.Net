@@ -1,25 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Flurl.Http;
+﻿using Flurl.Http;
 using Keycloak.Net.Models.AuthorizationPermissions;
 using Keycloak.Net.Models.AuthorizationScopes;
 using Keycloak.Net.Models.Clients;
-using Keycloak.Net.Models.Resources;
-using Resource = Keycloak.Net.Models.Resources.Resource;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AuthorizationResource = Keycloak.Net.Models.AuthorizationResources.AuthorizationResource;
 
 namespace Keycloak.Net
 {
     public partial class KeycloakClient
     {
         #region Permissions
-        public async Task<AuthorizationPermission> CreateAuthorizationPermissionAsync(string realm, string clientId, AuthorizationPermission permission) =>
-            await GetBaseUrl(realm)
+        public async Task<string> CreateAuthorizationPermissionAsync(string realm, string clientId, AuthorizationPermission permission)
+        {
+            var response = await GetBaseUrl(realm)
                 .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/permission")
                 .AppendPathSegment(permission.Type == AuthorizationPermissionType.Scope ? "/scope" : "/resource")
                 .PostJsonAsync(permission)
-                .ReceiveJson<AuthorizationPermission>()
                 .ConfigureAwait(false);
+
+            var locationPathAndQuery = response.Headers.Location.PathAndQuery;
+            var permissionId = response.IsSuccessStatusCode ? locationPathAndQuery.Substring(locationPathAndQuery.LastIndexOf("/", StringComparison.Ordinal) + 1) : null;
+            return permissionId;
+        }
 
         public async Task<AuthorizationPermission> GetAuthorizationPermissionByIdAsync(string realm, string clientId,
             AuthorizationPermissionType permissionType, string permissionId) => await GetBaseUrl(realm)
@@ -53,7 +57,7 @@ namespace Keycloak.Net
                 .ConfigureAwait(false);
         }
 
-        public async Task<bool> UpdateAuthorizationPermissionAsync(string realm, string clientId, AuthorizationPermission permission)
+        public async Task<bool> UpdateAuthorizationPermissionAsync(string realm, string clientId, string roleName, AuthorizationPermission permission)
         {
             var response = await GetBaseUrl(realm)
                 .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/permission")
@@ -92,11 +96,11 @@ namespace Keycloak.Net
                 .ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<Resource>> GetAuthorizationPermissionAssociatedResourcesAsync(string realm, string clientId, string permissionId)
+        public async Task<IEnumerable<AuthorizationResource>> GetAuthorizationPermissionAssociatedResourcesAsync(string realm, string clientId, string permissionId)
         {
             return await GetBaseUrl(realm)
                 .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/policy/{permissionId}/resources")
-                .GetJsonAsync<IEnumerable<Resource>>()
+                .GetJsonAsync<IEnumerable<AuthorizationResource>>()
                 .ConfigureAwait(false);
         }
         #endregion 
@@ -104,7 +108,7 @@ namespace Keycloak.Net
         #region Policy
         public async Task<RolePolicy> CreateRolePolicyAsync(string realm, string clientId, RolePolicy policy)
         {
-            var response = await GetBaseUrl(realm)
+                var response = await GetBaseUrl(realm)
                     .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/policy")
                     .AppendPathSegment(policy.Type == PolicyType.Role ? "/role" : string.Empty)
                     .PostJsonAsync(policy)
