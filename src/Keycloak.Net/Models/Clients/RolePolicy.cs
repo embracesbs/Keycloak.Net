@@ -41,7 +41,7 @@ namespace Keycloak.Net.Models.Clients
         public string Description { get; set; }
 
         [JsonConverter(typeof(PolicyTypeConverter))]
-        public PolicyType Type { get; } = PolicyType.Role;
+        public PolicyType Type { get; set; } = PolicyType.Role;
 
         [JsonConverter(typeof(PolicyDecisionLogicConverter))]
         public PolicyDecisionLogic Logic { get; set; } 
