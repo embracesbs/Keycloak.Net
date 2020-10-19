@@ -21,7 +21,7 @@ namespace Keycloak.Net.Tests
                 Email = "testemail@e.ee"
             };
 
-            var result = await _client.CreateUserAsync(realm, user);
+            var result = await _client.CreateAndRetrieveUserIdAsync(realm, user);
             Assert.False(string.IsNullOrWhiteSpace(result), "Created user ID not returned");
         }
 

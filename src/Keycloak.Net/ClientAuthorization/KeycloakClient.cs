@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Flurl.Http;
+﻿using Flurl.Http;
 using Keycloak.Net.Models.AuthorizationPermissions;
 using Keycloak.Net.Models.AuthorizationScopes;
 using Keycloak.Net.Models.Clients;
-using Keycloak.Net.Models.Resources;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AuthorizationResource = Keycloak.Net.Models.AuthorizationResources.AuthorizationResource;
 
 namespace Keycloak.Net
 {
@@ -91,11 +91,11 @@ namespace Keycloak.Net
                 .ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<Resource>> GetAuthorizationPermissionAssociatedResourcesAsync(string realm, string clientId, string permissionId)
+        public async Task<IEnumerable<AuthorizationResource>> GetAuthorizationPermissionAssociatedResourcesAsync(string realm, string clientId, string permissionId)
         {
             return await GetBaseUrl(realm)
                 .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/policy/{permissionId}/resources")
-                .GetJsonAsync<IEnumerable<Resource>>()
+                .GetJsonAsync<IEnumerable<AuthorizationResource>>()
                 .ConfigureAwait(false);
         }
         #endregion 
@@ -103,7 +103,7 @@ namespace Keycloak.Net
         #region Policy
         public async Task<RolePolicy> CreateRolePolicyAsync(string realm, string clientId, RolePolicy policy)
         {
-            var response = await GetBaseUrl(realm)
+                var response = await GetBaseUrl(realm)
                     .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/authz/resource-server/policy")
                     .AppendPathSegment(policy.Type == PolicyType.Role ? "/role" : string.Empty)
                     .PostJsonAsync(policy)
