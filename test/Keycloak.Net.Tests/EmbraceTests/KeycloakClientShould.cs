@@ -28,7 +28,7 @@ namespace Keycloak.Net.Tests
         [Theory]
         [Trait("Category", "EmbraceTests")]
         [InlineData("master")]
-        public async Task CreateClientAsync(string realm)
+        public async Task CreateClientAndRetrieveClientIdAsync(string realm)
         {
             var client = new Models.Clients.Client()
             {
@@ -37,7 +37,7 @@ namespace Keycloak.Net.Tests
                 BaseUrl = "baseurl1",
             };
 
-            var result = await _client.CreateClientAsync(realm, client);
+            var result = await _client.CreateClientAndRetrieveClientIdAsync(realm, client);
             Assert.False(string.IsNullOrWhiteSpace(result), "Created client ID not returned");
         }
 
