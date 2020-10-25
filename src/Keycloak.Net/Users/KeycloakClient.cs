@@ -221,27 +221,28 @@ namespace Keycloak.Net
 		}
 
 		public async Task<bool> ResetUserPasswordAsync(string realm, string userId, string password, bool temporary = true)
-		{
-			var credentials = new Credentials
-			{
-				Value = password,
-				Temporary = temporary
-			};
-			var response = await GetBaseUrl(realm)
-				.AppendPathSegment($"/admin/realms/{realm}/users/{userId}/reset-password")
-				.PutJsonAsync(credentials)
-				.ConfigureAwait(false);
-			return response.IsSuccessStatusCode;
-		}
+        {
+            HttpResponseMessage response = await InternalResetUserPasswordAsync(realm, userId, password, temporary).ConfigureAwait(false);
+            return response.IsSuccessStatusCode;
+        }
+
+        private async Task<HttpResponseMessage> InternalResetUserPasswordAsync(string realm, string userId, string password, bool temporary)
+        {
+            var credentials = new Credentials
+            {
+                Value = password,
+                Temporary = temporary
+            };
+            var response = await GetBaseUrl(realm)
+                .AppendPathSegment($"/admin/realms/{realm}/users/{userId}/reset-password")
+                .PutJsonAsync(credentials)
+                .ConfigureAwait(false);
+            return response;
+        }
 
         public async Task<SetPasswordResponse> SetUserPasswordAsync(string realm, string userId, string password)
         {
-            var response = await GetBaseUrl(realm)
-                .AppendPathSegment($"/admin/realms/{realm}/users/{userId}/reset-password")
-                .AllowHttpStatus(HttpStatusCode.BadRequest)
-                .PutJsonAsync(new { type = "password", value = password, temporary = false })
-                .ConfigureAwait(false);
-            
+            var response = await InternalResetUserPasswordAsync(realm, userId, password, false);
             if (response.IsSuccessStatusCode)
                 return new SetPasswordResponse {Success = response.IsSuccessStatusCode};
 
