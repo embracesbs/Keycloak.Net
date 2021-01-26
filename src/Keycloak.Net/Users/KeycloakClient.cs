@@ -54,6 +54,23 @@ namespace Keycloak.Net
 				.ConfigureAwait(false);
 		}
 
+        public async Task<IEnumerable<User>> GetUsersByAttributeAsync(string realm, string attributeName, string attributeValue, int? first = null, int? max = null)
+        {
+            var queryParams = new Dictionary<string, object>
+            {
+                [nameof(attributeName)] = attributeName,
+                [nameof(attributeValue)] = attributeValue,
+                [nameof(first)] = first,
+                [nameof(max)] = max
+            };
+
+            return await GetBaseUrl(realm)
+                .AppendPathSegment($"/realms/{realm}/users/by-attribute")
+                .SetQueryParams(queryParams)
+                .GetJsonAsync<IEnumerable<User>>()
+                .ConfigureAwait(false);
+        }
+
 		public async Task<int> GetUsersCountAsync(string realm) => await GetBaseUrl(realm)
 			.AppendPathSegment($"/admin/realms/{realm}/users/count")
 			.GetJsonAsync<int>()
