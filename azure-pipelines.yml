@@ -17,15 +17,10 @@ stages:
   - job: test
     steps:
 
-      - task: UseDotNet@2
-        displayName: Install .NET Core 3.1 SDK
-        inputs:
-          version: '3.1.x'
-          packageType: sdk
-
       - task: DotNetCoreCLI@2
         inputs:
           command: 'restore'
+          restoreArguments: 
           projects: 'test/**/*.csproj'
 
       - task: DotNetCoreCLI@2
