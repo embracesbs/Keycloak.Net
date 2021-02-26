@@ -90,5 +90,8 @@ namespace Keycloak.Net.Models.Clients
     {
         [JsonProperty("roles")]
         public IEnumerable<RoleConfig> RoleConfigs { get; set; }
+
+        [JsonProperty("groups")]
+        public IEnumerable<GroupConfig> GroupConfigs { get; set; }
     }
 }
