@@ -62,7 +62,7 @@ namespace Keycloak.Net.Models.Clients
         }
 
         [JsonProperty("users")]
-        public IEnumerable<string> UserIDs { get; set; }
+        public IEnumerable<string> UserIds { get; set; }
     }
 
     public class RoleConfig
