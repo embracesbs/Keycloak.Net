@@ -54,6 +54,17 @@ namespace Keycloak.Net.Models.Clients
         public IEnumerable<GroupConfig> GroupConfigs { get; set; }
     }
 
+    public class UserPolicy: PolicyBase
+    {
+        public UserPolicy()
+        {
+            Type = PolicyType.User;
+        }
+
+        [JsonProperty("users")]
+        public IEnumerable<string> UserIds { get; set; }
+    }
+
     public class RoleConfig
     {
         [JsonProperty("id")]

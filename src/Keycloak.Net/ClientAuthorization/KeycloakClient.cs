@@ -186,6 +186,37 @@ namespace Keycloak.Net
                 .ConfigureAwait(false);
         }
 
+        public async Task<UserPolicy> CreateUserPolicyAsync(string realm, string clientId, UserPolicy policy)
+        {
+            return await CreatePolicyAsync(realm, clientId, policy, PolicyType.User, "user").ConfigureAwait(false);
+        }
+
+        public async Task<UserPolicy> GetUserPolicyByIdAsync(string realm, string clientId, PolicyType policyType, string userPolicyId)
+        {
+            return await GetPolicyByIdAsync<UserPolicy>(realm, clientId, policyType, userPolicyId, PolicyType.User, "user").ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<UserPolicy>> GetUserPoliciesAsync(string realm, string clientId,
+            int? first = null, int? max = null,
+            string name = null, string resource = null,
+            string scope = null, bool? permission = null)
+        {
+            return await GetPoliciesAsync<UserPolicy>(realm, clientId, first, max, name, resource, scope, permission, "user")
+                .ConfigureAwait(false);
+        }
+
+        public async Task<bool> UpdateUserPolicyAsync(string realm, string clientId, UserPolicy policy)
+        {
+            return await UpdatePolicy(realm, clientId, policy, PolicyType.Group, "user")
+                .ConfigureAwait(false);
+        }
+
+        public async Task<bool> DeleteUserPolicyAsync(string realm, string clientId, PolicyType policyType, string userPolicyId)
+        {
+            return await DeletePolicyAsync(realm, clientId, policyType, userPolicyId, PolicyType.User, "user")
+                .ConfigureAwait(false);
+        }
+        
         private async Task<T> GetPolicyByIdAsync<T>(string realm, string clientId, PolicyType policyType, string policyId, PolicyType expectedPolicyType, string path)
         {
             return await GetBaseUrl(realm)
