@@ -20,6 +20,7 @@ stages:
       - task: DotNetCoreCLI@2
         inputs:
           command: 'restore'
+          restoreArguments: 
           projects: 'test/**/*.csproj'
 
       - task: DotNetCoreCLI@2
