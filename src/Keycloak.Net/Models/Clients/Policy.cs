@@ -104,5 +104,8 @@ namespace Keycloak.Net.Models.Clients
 
         [JsonProperty("groups")]
         public IEnumerable<GroupConfig> GroupConfigs { get; set; }
+        
+        [JsonProperty("users")]
+        public IEnumerable<string> UserIds { get; set; }
     }
 }
